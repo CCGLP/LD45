@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce2ece2d370af140abb8f99157670fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  local: 1
+  local: 0
 --- !u!4 &121872849
 Transform:
   m_ObjectHideFlags: 0
@@ -301,10 +301,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cg: {fileID: 220997073}
   cgAnswers: {fileID: 904079979}
+  cgInput: {fileID: 0}
+  cgHit: {fileID: 0}
+  cgButtonStop: {fileID: 0}
   question: {fileID: 1060222468}
+  tooltip: {fileID: 0}
   parentAnswer: {fileID: 720775514}
   answerPrefab: {fileID: 2556008678975609407, guid: 38be0e19996101d4eaeb92facc4ac353,
     type: 3}
+  input: {fileID: 0}
 --- !u!1 &511157804
 GameObject:
   m_ObjectHideFlags: 0

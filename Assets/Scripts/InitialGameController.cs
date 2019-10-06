@@ -47,7 +47,17 @@ public class InitialGameController : Singleton<InitialGameController>
         }
         else   
         {
-            int x = Random.Range(0, cards.Count);
+            int x = 0;
+
+            if (!PlayerPrefs.HasKey("destiny"))
+            {
+                x = Random.Range(0, cards.Count);
+                PlayerPrefs.SetInt("destiny", x); 
+            }
+            else
+            {
+                x = PlayerPrefs.GetInt("destiny"); 
+            }
             for (int i = 0; i< cards.Count; i++)
             {
                 if (i != x)
@@ -64,7 +74,8 @@ public class InitialGameController : Singleton<InitialGameController>
 
     private void DecideDestiny(int cardNumber)
     {
-        cardName = ""; 
+        cardName = "";
+        //cardNumber = 4; //QUITAR CARLOS QUITALO OSTIA
         switch (cardNumber)
         {
             case 0:
@@ -84,7 +95,11 @@ public class InitialGameController : Singleton<InitialGameController>
                 break; 
         }
 
+        
+
+        NetworkController.Instance.SetGameType(cardName);
         NetworkController.Instance.SendWebSocketMessage(0, cardName); 
+        
     }
 
 
@@ -103,16 +118,16 @@ public class InitialGameController : Singleton<InitialGameController>
             }
         });
 
-        answers.Add(new AnswerInfo
-        {
-            name = "Action",
-            onClick = () =>
-            {
-                var message = new MessageDecideGame { cardName = cardName, gameType = "Action" };
-                NetworkController.Instance.SendWebSocketMessage(1, JsonUtility.ToJson(message));
-                SceneManager.LoadScene(3); 
-            }
-        });
+        //answers.Add(new AnswerInfo
+        //{
+        //    name = "Action",
+        //    onClick = () =>
+        //    {
+        //        var message = new MessageDecideGame { cardName = cardName, gameType = "Action" };
+        //        NetworkController.Instance.SendWebSocketMessage(1, JsonUtility.ToJson(message));
+        //        SceneManager.LoadScene(3); 
+        //    }
+        //});
 
 
         answers.Add(new AnswerInfo

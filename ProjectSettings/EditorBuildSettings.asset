@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NarrativeGame.unity
     guid: db3d7ce5dc00d1642be9a9241b4cedac
+  - enabled: 1
+    path: Assets/Scenes/EndGame.unity
+    guid: f7b406ec0051bcc45af7466e4391f7d3
   m_configObjects: {}
