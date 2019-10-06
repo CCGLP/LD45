@@ -24,3 +24,29 @@ public struct MessageDecideGame
     public string cardName;
     public string gameType; 
 }
+
+
+[System.Serializable]
+public struct MessageDataPlatformer
+{
+    public DataPlatformer[] data; 
+}
+
+[System.Serializable]
+public struct DataPlatformer
+{
+    public string cardType; 
+    public int x;
+    public int y;
+    public string type; 
+}
+
+
+[System.Serializable]
+public struct ConversationalData
+{
+    public string _id;
+    public string question;
+    public string[] answers;
+    public string cardType; 
+}

@@ -13,6 +13,9 @@ public class NetworkController : GlobalSingleton<NetworkController>
 
     private WebSocket websocket;
 
+    private string gameType;
+
+    public string GameType { get => gameType; set => gameType = value; }
 
     async void Start()
     {
@@ -49,11 +52,11 @@ public class NetworkController : GlobalSingleton<NetworkController>
             MessageData data = JsonUtility.FromJson<MessageData>(message);
             switch (data.id)
             {
-                case 0: //Conexión principal, elegir tipo de juego o preguntar
+                case 0://Conexión principal, elegir tipo de juego o preguntar
                     MessageStartGame x = JsonUtility.FromJson<MessageStartGame>(data.message); 
                     switch ((GameType)x.gameType)
                     {
-                        case GameType.ASK:
+                        case global::GameType.ASK:
                             InitialGameController.Instance.AskGame(); 
                             break;
 
@@ -61,14 +64,53 @@ public class NetworkController : GlobalSingleton<NetworkController>
                             SceneManager.LoadScene(2 + x.gameType);
                             break;
                     }
-                    break;
+
+                break;
 
                 case 1:
                     break;
 
                 case 2:
+                    MessageDataPlatformer platformData = JsonUtility.FromJson<MessageDataPlatformer>(data.message); 
+                    for (int i = 0; i< platformData.data.Length; i++)
+                    {
+                        switch (platformData.data[i].type)
+                        {
+                            case "platform":
+                                PlatformerGameController.Instance.InstantiatePlatform(platformData.data[i]); 
+                            break;
 
-                    break; 
+                            case "enemy":
+                                PlatformerGameController.Instance.InstantiateEnemy(platformData.data[i]); 
+                            break;
+
+                            case "speed":
+                                PlatformerGameController.Instance.ChangeSpeed(platformData.data[i]);
+                            break;
+                            case "jump":
+                                PlatformerGameController.Instance.ChangeJump(platformData.data[i]); 
+                            break;
+                        }
+                    }
+
+                    break;
+
+                case 6:
+                    ConversationalData conData = JsonUtility.FromJson<ConversationalData>(data.message);
+                    ConversationalGameController.Instance.InitializeQuestionAnswer(conData); 
+                    break;
+
+                case 7:
+
+                    break;
+
+                case 8:
+                    ConversationalGameController.Instance.AskForNewQuestionInit(); 
+                   break;
+
+                case 9:
+                    SceneManager.LoadScene(5); 
+                    break;
             }
             Debug.Log("OnMessage! " + data.id + " " + data.message);
         };
@@ -83,6 +125,11 @@ public class NetworkController : GlobalSingleton<NetworkController>
     private void OnApplicationQuit()
     {
         SendWebSocketMessage(-1, "quit"); 
+    }
+
+    public void SetGameType(string type)
+    {
+        gameType = type; 
     }
 
     public async void SendWebSocketMessage(int id, string message)
